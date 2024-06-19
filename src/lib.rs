@@ -80,10 +80,14 @@
 #![warn(missing_docs, missing_debug_implementations)]
 extern crate alloc;
 
+#[cfg(not(feature = "extra-platforms"))]
+pub(crate) use core::sync::atomic::{AtomicPtr, AtomicUsize, AtomicU16, AtomicU32, Ordering};
+#[cfg(feature = "extra-platforms")]
+pub(crate) use portable_atomic::{AtomicPtr, AtomicUsize, AtomicU16, AtomicU32, Ordering};
 // Arc counter definition
 
 #[cfg(target_pointer_width = "64")]
-pub(crate) use core::sync::atomic::AtomicU32 as AtomicCounter;
+pub(crate) use AtomicU32 as AtomicCounter;
 
 #[cfg(all(
     not(target_pointer_width = "64"),
@@ -91,13 +95,13 @@ pub(crate) use core::sync::atomic::AtomicU32 as AtomicCounter;
     not(target_pointer_width = "8"),
     feature = "usize-for-small-platforms",
 ))]
-pub(crate) use core::sync::atomic::AtomicUsize as AtomicCounter;
+pub(crate) use AtomicUsize as AtomicCounter;
 
 #[cfg(all(
     target_pointer_width = "32",
     not(feature = "usize-for-small-platforms")
 ))]
-pub(crate) use core::sync::atomic::AtomicU16 as AtomicCounter;
+pub(crate) use AtomicU16 as AtomicCounter;
 
 // Rc counter definition
 

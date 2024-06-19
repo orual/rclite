@@ -15,9 +15,11 @@ readme = "README.md"
 [features]
 default = ["usize-for-small-platforms"]
 usize-for-small-platforms = []
+extra-platforms = ["portable-atomic"]
 
 [dependencies]
 branches = "0.1"
+portable-atomic = { version = "1.3", optional = true, default-features = false, features = ["require-cas"] }
 
 [dev-dependencies]
 criterion = "0.4"
